@@ -8,9 +8,9 @@ https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression
 ## ensure 
 ## tensorflow,keras,pandas,numpy,opencv is installed 
 else use
-# pip install tensorflow
-# pip install keras
-# pip install pandas
-# pip install numpy
-# pip install opencv-python
+# pip3 install tensorflow
+# pip3 install keras
+# pip3 install pandas
+# pip3 install numpy
+# pip3 install opencv-python
 
