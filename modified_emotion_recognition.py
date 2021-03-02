@@ -37,7 +37,7 @@ for index, row in df.iterrows():
 num_features = 64
 num_labels = 7
 batch_size = 64
-epochs = 30
+epochs = 20
 width, height = 48, 48
 
 
