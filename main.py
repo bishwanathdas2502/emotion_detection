@@ -5,13 +5,14 @@ import pygame
 import time
 # to determine the length of song
 from mutagen.mp3 import MP3
-
-
-
-
+import os
+from pathlib import Path
 
 # grab song length time info
+
+emotion = None
 def play_time():
+    global emotion
     # grab time
     current_time = pygame.mixer.music.get_pos() / 1000
     converted_time = time.strftime('%M:%S',time.gmtime(current_time))
@@ -23,7 +24,7 @@ def play_time():
     # grab song title from playlist
     song = song_box.get(ACTIVE)
     # renaming the song
-    song = f'D:/Realtime-Emotion-Detection-master/songs/{song}'
+    song = f'D:/Realtime-Emotion-Detection-master/songs/{emotion}/{song}'
 
     # get song length
     song_mut = MP3(song)
@@ -42,19 +43,37 @@ def play_time():
 
 # add song
 def add_song():
+    global emotion
     emotion = videoTester.emotionCapture()
+    print(f"Directing to songs/{emotion} directory")
     song = filedialog.askopenfilename(initialdir=f'songs/{emotion}',title = "Choose A Song",filetypes=(("mp3 Files","*.mp3"),))
+
     # strip the extension
-    song = song.replace(f"D:/Realtime-Emotion-Detection-master/songs/","")
+    song = song.replace(f"D:/Realtime-Emotion-Detection-master/songs/{emotion}","")
 
     # add song to listbox
     song_box.insert(END,song)
 
 # add man song to paylist
 def add_many_song():
+    global emotion
     emotion = videoTester.emotionCapture()
-    songs = filedialog.askopenfilenames(initialdir=f'songs/{emotion}', title="Choose A Song",filetypes=(("mp3 Files", "*.mp3"),))
+    i = 0
+    if(emotion == None):
+        while(emotion == None):
+            print(emotion)
+            print("Picture is not clear\n 1.Take Picture again\n2.exit")
+            i = int(input())
+            if(i == 1):
+                emotion = videoTester.emotionCapture()
+            else:
+                return
 
+    # songs = filedialog.askopenfilenames(initialdir=f'songs/{emotion}', title="Choose A Song",filetypes=(("mp3 Files", "*.mp3"),))
+    # songs = Path(f'D:/Realtime-Emotion-Detection-master/songs/{emotion}')
+    print(f'User emotion : {emotion}')
+    songs = os.listdir(f'D:/Realtime-Emotion-Detection-master/songs/{emotion}')
+    print(f'adding songs from songs/{emotion}')
     # loop through list
     for song in songs:
         # strip the extension
@@ -65,9 +84,10 @@ def add_many_song():
 
 # play selected song
 def play():
+    global emotion
     # get the active song
     song = song_box.get(ACTIVE)
-    song = f'D:/Realtime-Emotion-Detection-master/songs/{song}'
+    song = f'D:/Realtime-Emotion-Detection-master/songs/{emotion}/{song}'
     pygame.mixer.music.load(song)
     pygame.mixer.music.play(loops=0)
     # call the play time fuction to get song length
@@ -83,6 +103,7 @@ def stop():
 
 #play the next song in playlist
 def next_song():
+    global emotion
     #grabbing current song tuple number
     next_one = song_box.curselection()
     # add 1 to current song number
@@ -90,7 +111,7 @@ def next_song():
     #grab song title from playlist
     song = song_box.get(next_one)
     #renaming the song
-    song = f'D:/Realtime-Emotion-Detection-master/songs/{song}'
+    song = f'D:/Realtime-Emotion-Detection-master/songs/{emotion}/{song}'
     pygame.mixer.music.load(song)
     pygame.mixer.music.play(loops=0)
 
@@ -104,6 +125,7 @@ def next_song():
 #play previous_song
 
 def previous_song():
+    global emotion
     # grabbing current song tuple number
     next_one = song_box.curselection()
     # add 1 to current song number
@@ -111,7 +133,7 @@ def previous_song():
     # grab song title from playlist
     song = song_box.get(next_one)
     # renaming the song
-    song = f'D:/Realtime-Emotion-Detection-master/songs/{song}'
+    song = f'D:/Realtime-Emotion-Detection-master/songs/{emotion}/{song}'
     pygame.mixer.music.load(song)
     pygame.mixer.music.play(loops=0)
 
